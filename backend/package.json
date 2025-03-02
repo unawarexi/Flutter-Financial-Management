@@ -1,0 +1,38 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Save your time! Don't build repetetive things from scratch",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "MERN",
+    "starter-kit",
+    "Vite",
+    "Tailwind CSS",
+    "react-router-dom",
+    "Express",
+    "Node"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "compression": "^1.8.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.0.0",
+    "ioredis": "^5.5.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.0.2",
+    "nodemon": "^3.1.9",
+    "pg": "^8.13.3",
+    "socket.io": "^4.8.1",
+    "util": "^0.12.5",
+    "uuid": "^11.1.0"
+  }
+}
