@@ -2,7 +2,7 @@ import 'package:financial_management/data/services/auth_service.dart';
 import 'package:financial_management/presentation/screens/auth/login.dart';
 import 'package:flutter/material.dart';
 import 'package:sign_button/sign_button.dart';
-import 'package:intl/intl.dart'; // For date formatting
+import 'package:intl/intl.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
