@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200">
+  <!-- Main text -->
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0A2463" />
+      <stop offset="100%" stop-color="#3E92CC" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Text Shadow -->
+  <text x="403" y="123" 
+        font-family="Arial, sans-serif" 
+        font-weight="bold" 
+        font-size="90" 
+        text-anchor="middle"
+        fill="#0A2463" 
+        opacity="0.2"
+        transform="translate(4, 4)">
+    InvestSync
+  </text>
+  
+  <!-- Main Text -->
+  <text x="400" y="120" 
+        font-family="Arial, sans-serif" 
+        font-weight="bold" 
+        font-size="90" 
+        text-anchor="middle"
+        fill="url(#gradient)">
+    InvestSync
+  </text>
+  
+  <!-- Sync icon -->
+  <path d="M685,85 C690,80 700,80 705,85 L715,95 C720,100 720,110 715,115 L705,125 C700,130 690,130 685,125 L675,115 C670,110 670,100 675,95 Z" 
+        fill="#3E92CC" 
+        opacity="0.9"/>
+  
+  <!-- Investment arrow -->
+  <path d="M130,110 L150,85 L170,110" 
+        stroke="#0A2463" 
+        stroke-width="8" 
+        fill="none" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+</svg>

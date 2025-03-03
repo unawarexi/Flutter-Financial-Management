@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
+  <!-- Definitions with vibrant blue gradients -->
+  <defs>
+    <linearGradient id="outerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#051d54" /> <!-- Darker blue -->
+      <stop offset="100%" stop-color="#1a7ce6" /> <!-- More vibrant lighter blue -->
+    </linearGradient>
+    <linearGradient id="middleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a3b8c" /> <!-- Darker blue -->
+      <stop offset="100%" stop-color="#2b88f0" /> <!-- More vibrant lighter blue -->
+    </linearGradient>
+    <linearGradient id="innerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1254c4" /> <!-- Darker blue -->
+      <stop offset="100%" stop-color="#3a94fa" /> <!-- More vibrant lighter blue -->
+    </linearGradient>
+  </defs>
+  
+  <!-- Centering all content within the viewBox -->
+  <g transform="translate(150, 150) scale(0.7) translate(-150, -150)">
+    <!-- Outer Rhombus -->
+    <path d="M150,50 
+             L250,150 
+             L150,250 
+             L50,150 
+             L100,100" 
+          fill="none" 
+          stroke="url(#outerGradient)" 
+          stroke-width="8" 
+          stroke-linejoin="round" 
+          stroke-linecap="round" />
+    
+    <!-- Middle Rhombus -->
+    <path d="M150,70 
+             L230,150 
+             L150,230 
+             L70,150 
+             L110,110" 
+          fill="none" 
+          stroke="url(#middleGradient)" 
+          stroke-width="6" 
+          stroke-linejoin="round" 
+          stroke-linecap="round" />
+    
+    <!-- Inner Rhombus -->
+    <path d="M150,90 
+             L210,150 
+             L150,210 
+             L90,150 
+             L120,120" 
+          fill="none" 
+          stroke="url(#innerGradient)" 
+          stroke-width="4" 
+          stroke-linejoin="round" 
+          stroke-linecap="round" />
+    
+    <!-- Sync icon, centered in the middle -->
+    <path d="M140,140 
+             C145,135 155,135 160,140 
+             L170,150 
+             C175,155 175,165 170,170 
+             L160,180 
+             C155,185 145,185 140,180 
+             L130,170 
+             C125,165 125,155 130,150 Z" 
+          fill="#3E92CC" 
+          opacity="0.9" />
+  </g>
+</svg>
