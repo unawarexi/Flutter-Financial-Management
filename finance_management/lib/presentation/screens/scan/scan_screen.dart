@@ -3,12 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:camera/camera.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:uuid/uuid.dart';
 
 class ScanScreen extends StatefulWidget {
-  const ScanScreen({Key? key}) : super(key: key);
+  const ScanScreen({super.key});
 
   @override
   State createState() => _ScanScreenState();
@@ -56,10 +54,7 @@ class _ScanScreenState extends State<ScanScreen>
     );
 
     _scanAnimation = Tween(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: Curves.linear,
-      ),
+      CurvedAnimation(parent: _animationController, curve: Curves.linear),
     );
 
     // Set current date
@@ -86,7 +81,7 @@ class _ScanScreenState extends State<ScanScreen>
     if (status.isGranted) {
       _cameraController = CameraController(
         cameras.first,
-        ResolutionPreset.high,
+        ResolutionPreset.max,
         enableAudio: false,
       );
 
@@ -186,9 +181,7 @@ class _ScanScreenState extends State<ScanScreen>
       appBar: AppBar(
         title: Text(
           _isResultScreen ? 'Add Transaction' : 'Scan Receipt',
-          style: GoogleFonts.poppins(
-            fontWeight: FontWeight.w600,
-          ),
+          style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
         ),
         elevation: 0,
         backgroundColor: Colors.transparent,
@@ -227,13 +220,12 @@ class _ScanScreenState extends State<ScanScreen>
                 children: [
                   // Camera preview
                   _isCameraInitialized
-                      ? AspectRatio(
-                          aspectRatio: _cameraController!.value.aspectRatio,
-                          child: CameraPreview(_cameraController!),
-                        )
-                      : const Center(
-                          child: CircularProgressIndicator(),
-                        ),
+                      ? SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: MediaQuery.of(context).size.height * 0.6,
+                        child: CameraPreview(_cameraController!),
+                      )
+                      : const Center(child: CircularProgressIndicator()),
 
                   // Scanning overlay
                   if (_isScanning)
@@ -241,7 +233,8 @@ class _ScanScreenState extends State<ScanScreen>
                       animation: _scanAnimation,
                       builder: (context, child) {
                         return Positioned(
-                          top: MediaQuery.of(context).size.height *
+                          top:
+                              MediaQuery.of(context).size.height *
                               _scanAnimation.value *
                               0.5,
                           left: 0,
@@ -272,7 +265,9 @@ class _ScanScreenState extends State<ScanScreen>
                     bottom: 40,
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 8),
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.black.withOpacity(0.6),
                         borderRadius: BorderRadius.circular(12),
@@ -362,9 +357,7 @@ class _ScanScreenState extends State<ScanScreen>
             decoration: BoxDecoration(
               color: Colors.grey.withOpacity(0.1),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: Colors.grey.withOpacity(0.3),
-              ),
+              border: Border.all(color: Colors.grey.withOpacity(0.3)),
             ),
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
@@ -427,14 +420,16 @@ class _ScanScreenState extends State<ScanScreen>
                     margin: const EdgeInsets.only(right: 12),
                     width: 100,
                     decoration: BoxDecoration(
-                      color: isSelected
-                          ? const Color(0xFF6200EE)
-                          : Colors.grey.withOpacity(0.1),
+                      color:
+                          isSelected
+                              ? const Color(0xFF6200EE)
+                              : Colors.grey.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                        color: isSelected
-                            ? Colors.transparent
-                            : Colors.grey.withOpacity(0.3),
+                        color:
+                            isSelected
+                                ? Colors.transparent
+                                : Colors.grey.withOpacity(0.3),
                       ),
                     ),
                     padding: const EdgeInsets.all(12),
@@ -482,9 +477,7 @@ class _ScanScreenState extends State<ScanScreen>
               decoration: BoxDecoration(
                 color: Colors.grey.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: Colors.grey.withOpacity(0.3),
-                ),
+                border: Border.all(color: Colors.grey.withOpacity(0.3)),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               child: Row(
@@ -493,9 +486,7 @@ class _ScanScreenState extends State<ScanScreen>
                   const SizedBox(width: 12),
                   Text(
                     _dateController.text,
-                    style: GoogleFonts.poppins(
-                      fontSize: 16,
-                    ),
+                    style: GoogleFonts.poppins(fontSize: 16),
                   ),
                   const Spacer(),
                   const Icon(Icons.arrow_drop_down, color: Colors.grey),
@@ -519,23 +510,17 @@ class _ScanScreenState extends State<ScanScreen>
             decoration: BoxDecoration(
               color: Colors.grey.withOpacity(0.1),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: Colors.grey.withOpacity(0.3),
-              ),
+              border: Border.all(color: Colors.grey.withOpacity(0.3)),
             ),
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: TextField(
               controller: _noteController,
               maxLines: 3,
-              style: GoogleFonts.poppins(
-                fontSize: 16,
-              ),
+              style: GoogleFonts.poppins(fontSize: 16),
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: 'Add note',
-                hintStyle: GoogleFonts.poppins(
-                  color: Colors.grey,
-                ),
+                hintStyle: GoogleFonts.poppins(color: Colors.grey),
               ),
             ),
           ),

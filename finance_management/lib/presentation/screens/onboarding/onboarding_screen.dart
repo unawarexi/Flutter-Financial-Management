@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:financial_management/presentation/screens/auth/login.dart';
 import 'package:flutter/material.dart';
-import 'package:sign_button/sign_button.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -173,7 +172,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 // Buttons at the bottom
                 Padding(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 24.0, vertical: 40.0),
+                    horizontal: 24.0,
+                    vertical: 40.0,
+                  ),
                   child: Row(
                     children: [
                       if (_currentPage < _onboardingItems.length - 1)
@@ -189,9 +190,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               ),
                               elevation: 0,
                             ),
-                            child: const Text('Next',
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w600)),
+                            child: const Text(
+                              'Next',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                           ),
                         )
                       else
@@ -207,9 +212,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               ),
                               elevation: 0,
                             ),
-                            child: const Text('Get Started',
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w600)),
+                            child: const Text(
+                              'Get Started',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                           ),
                         ),
                     ],

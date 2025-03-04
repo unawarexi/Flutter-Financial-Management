@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:financial_management/presentation/widgets/common/custom_nav_shape.dart';
+// import 'package:financial_management/presentation/widgets/common/custom_nav_shape.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
@@ -227,7 +227,7 @@ class _DashboardScreenState extends State<DashboardScreen>
           itemCount: accounts.length,
           options: CarouselOptions(
             height: 220,
-            viewportFraction: 0.9,
+            viewportFraction: 1,
             enlargeCenterPage: true,
             onPageChanged: (index, reason) {
               setState(() {

@@ -22,11 +22,11 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Container(
-      color: Colors.white,
-      child: _tabBar,
-    );
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
+    return Container(color: Colors.white, child: _tabBar);
   }
 
   @override
@@ -80,47 +80,51 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _screens[_currentIndex],
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.shade200,
-              blurRadius: 10,
-              offset: const Offset(0, -2),
+    return Column(
+      children: [
+        Scaffold(
+          body: _screens[_currentIndex],
+          bottomNavigationBar: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.shade200,
+                  blurRadius: 10,
+                  offset: const Offset(0, -2),
+                ),
+              ],
             ),
-          ],
+            child: BottomNavigationBar(
+              currentIndex: _currentIndex,
+              onTap: (index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
+              backgroundColor: Colors.white,
+              selectedItemColor: const Color(0xFF6554C0),
+              unselectedItemColor: Colors.grey.shade400,
+              type: BottomNavigationBarType.fixed,
+              showUnselectedLabels: true,
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.account_balance_wallet),
+                  label: 'Budget',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.analytics),
+                  label: 'Insights',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person),
+                  label: 'Profile',
+                ),
+              ],
+            ),
+          ),
         ),
-        child: BottomNavigationBar(
-          currentIndex: _currentIndex,
-          onTap: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
-          },
-          backgroundColor: Colors.white,
-          selectedItemColor: const Color(0xFF6554C0),
-          unselectedItemColor: Colors.grey.shade400,
-          type: BottomNavigationBarType.fixed,
-          showUnselectedLabels: true,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.account_balance_wallet),
-              label: 'Budget',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.analytics),
-              label: 'Insights',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-            ),
-          ],
-        ),
-      ),
+      ],
     );
   }
 }
@@ -302,7 +306,7 @@ class _BudgetScreenState extends State<BudgetScreen>
     1940.30,
     1850.90,
     1920.10,
-    1790.50
+    1790.50,
   ];
 
   // Budget overview statistics
@@ -348,8 +352,10 @@ class _BudgetScreenState extends State<BudgetScreen>
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.notifications_outlined,
-                color: Color(0xFF6554C0)),
+            icon: const Icon(
+              Icons.notifications_outlined,
+              color: Color(0xFF6554C0),
+            ),
             onPressed: () {
               // Show notifications
             },
@@ -446,8 +452,10 @@ class _BudgetScreenState extends State<BudgetScreen>
               ),
               const Spacer(),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFFEEECFF),
                   borderRadius: BorderRadius.circular(20),
@@ -459,9 +467,10 @@ class _BudgetScreenState extends State<BudgetScreen>
                           ? Icons.warning
                           : Icons.check_circle,
                       size: 16,
-                      color: _budgetProgress > 0.9
-                          ? Colors.orangeAccent
-                          : const Color(0xFF6554C0),
+                      color:
+                          _budgetProgress > 0.9
+                              ? Colors.orangeAccent
+                              : const Color(0xFF6554C0),
                     ),
                     const SizedBox(width: 4),
                     Text(
@@ -469,9 +478,10 @@ class _BudgetScreenState extends State<BudgetScreen>
                       style: GoogleFonts.poppins(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
-                        color: _budgetProgress > 0.9
-                            ? Colors.orangeAccent
-                            : const Color(0xFF6554C0),
+                        color:
+                            _budgetProgress > 0.9
+                                ? Colors.orangeAccent
+                                : const Color(0xFF6554C0),
                       ),
                     ),
                   ],
@@ -496,24 +506,16 @@ class _BudgetScreenState extends State<BudgetScreen>
                 _selectedPeriod = value;
               });
             },
-            itemBuilder: (context) => [
-              const PopupMenuItem(
-                value: 'Weekly',
-                child: Text('Weekly'),
-              ),
-              const PopupMenuItem(
-                value: 'Monthly',
-                child: Text('Monthly'),
-              ),
-              const PopupMenuItem(
-                value: 'Quarterly',
-                child: Text('Quarterly'),
-              ),
-              const PopupMenuItem(
-                value: 'Yearly',
-                child: Text('Yearly'),
-              ),
-            ],
+            itemBuilder:
+                (context) => [
+                  const PopupMenuItem(value: 'Weekly', child: Text('Weekly')),
+                  const PopupMenuItem(value: 'Monthly', child: Text('Monthly')),
+                  const PopupMenuItem(
+                    value: 'Quarterly',
+                    child: Text('Quarterly'),
+                  ),
+                  const PopupMenuItem(value: 'Yearly', child: Text('Yearly')),
+                ],
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
@@ -538,10 +540,7 @@ class _BudgetScreenState extends State<BudgetScreen>
                     ),
                   ),
                   const SizedBox(width: 4),
-                  const Icon(
-                    Icons.arrow_drop_down,
-                    color: Color(0xFF6554C0),
-                  ),
+                  const Icon(Icons.arrow_drop_down, color: Color(0xFF6554C0)),
                 ],
               ),
             ),
@@ -720,7 +719,7 @@ class _BudgetScreenState extends State<BudgetScreen>
                             'Mar',
                             'Apr',
                             'May',
-                            'Jun'
+                            'Jun',
                           ];
                           if (value >= 0 && value < monthLabels.length) {
                             return Padding(
@@ -742,9 +741,10 @@ class _BudgetScreenState extends State<BudgetScreen>
                   borderData: FlBorderData(show: false),
                   lineBarsData: [
                     LineChartBarData(
-                      spots: _monthlyExpenses.asMap().entries.map((e) {
-                        return FlSpot(e.key.toDouble(), e.value);
-                      }).toList(),
+                      spots:
+                          _monthlyExpenses.asMap().entries.map((e) {
+                            return FlSpot(e.key.toDouble(), e.value);
+                          }).toList(),
                       isCurved: true,
                       color: Colors.white,
                       barWidth: 3,
@@ -763,7 +763,8 @@ class _BudgetScreenState extends State<BudgetScreen>
                         return touchedSpots.map((touchedSpot) {
                           return LineTooltipItem(
                             currencyFormat.format(
-                                _monthlyExpenses[touchedSpot.x.toInt()]),
+                              _monthlyExpenses[touchedSpot.x.toInt()],
+                            ),
                             GoogleFonts.poppins(
                               color: const Color(0xFF6554C0),
                               fontWeight: FontWeight.w600,
@@ -784,7 +785,7 @@ class _BudgetScreenState extends State<BudgetScreen>
 
   Widget _buildBudgetGoals() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -908,7 +909,9 @@ class _BudgetScreenState extends State<BudgetScreen>
               _buildFilterChip('Essential', _filterSelection == 'Essential'),
               const SizedBox(width: 8),
               _buildFilterChip(
-                  'Non-Essential', _filterSelection == 'Non-Essential'),
+                'Non-Essential',
+                _filterSelection == 'Non-Essential',
+              ),
             ],
           ),
         ),
@@ -965,11 +968,14 @@ class _BudgetScreenState extends State<BudgetScreen>
                             ),
                             Container(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 4),
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
                               decoration: BoxDecoration(
-                                color: isOverBudget
-                                    ? Colors.redAccent.withOpacity(0.1)
-                                    : const Color(0xFFEEECFF),
+                                color:
+                                    isOverBudget
+                                        ? Colors.redAccent.withOpacity(0.1)
+                                        : const Color(0xFFEEECFF),
                                 borderRadius: BorderRadius.circular(16),
                               ),
                               child: Text(
@@ -977,9 +983,10 @@ class _BudgetScreenState extends State<BudgetScreen>
                                 style: GoogleFonts.poppins(
                                   fontSize: 11,
                                   fontWeight: FontWeight.w600,
-                                  color: isOverBudget
-                                      ? Colors.redAccent
-                                      : const Color(0xFF6554C0),
+                                  color:
+                                      isOverBudget
+                                          ? Colors.redAccent
+                                          : const Color(0xFF6554C0),
                                 ),
                               ),
                             ),
@@ -1005,9 +1012,10 @@ class _BudgetScreenState extends State<BudgetScreen>
                           style: GoogleFonts.poppins(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
-                            color: isOverBudget
-                                ? Colors.redAccent
-                                : Colors.grey.shade600,
+                            color:
+                                isOverBudget
+                                    ? Colors.redAccent
+                                    : Colors.grey.shade600,
                           ),
                         ),
                       ),
@@ -1050,15 +1058,16 @@ class _BudgetScreenState extends State<BudgetScreen>
           border: Border.all(
             color: isSelected ? const Color(0xFF6554C0) : Colors.grey.shade300,
           ),
-          boxShadow: isSelected
-              ? [
-                  BoxShadow(
-                    color: const Color(0xFF6554C0).withOpacity(0.2),
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
-                  ),
-                ]
-              : null,
+          boxShadow:
+              isSelected
+                  ? [
+                    BoxShadow(
+                      color: const Color(0xFF6554C0).withOpacity(0.2),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ]
+                  : null,
         ),
         child: Text(
           label,
@@ -1098,8 +1107,10 @@ class _BudgetScreenState extends State<BudgetScreen>
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30),
-                borderSide:
-                    const BorderSide(color: Color(0xFF6554C0), width: 1),
+                borderSide: const BorderSide(
+                  color: Color(0xFF6554C0),
+                  width: 1,
+                ),
               ),
             ),
           ),
@@ -1112,13 +1123,14 @@ class _BudgetScreenState extends State<BudgetScreen>
               final transaction = _recentTransactions[index];
               final category = _budgetCategories.firstWhere(
                 (c) => c.name == transaction.category,
-                orElse: () => BudgetCategory(
-                  name: 'Other',
-                  icon: Icons.category,
-                  color: const Color(0xFF6554C0),
-                  allocated: 0,
-                  spent: 0,
-                ),
+                orElse:
+                    () => BudgetCategory(
+                      name: 'Other',
+                      icon: Icons.category,
+                      color: const Color(0xFF6554C0),
+                      allocated: 0,
+                      spent: 0,
+                    ),
               );
 
               return Container(
@@ -1142,9 +1154,10 @@ class _BudgetScreenState extends State<BudgetScreen>
                   leading: Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: transaction.isExpense
-                          ? category.color.withOpacity(0.1)
-                          : Colors.green.withOpacity(0.1),
+                      color:
+                          transaction.isExpense
+                              ? category.color.withOpacity(0.1)
+                              : Colors.green.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Icon(
@@ -1176,9 +1189,10 @@ class _BudgetScreenState extends State<BudgetScreen>
                     style: GoogleFonts.poppins(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
-                      color: transaction.isExpense
-                          ? Colors.redAccent
-                          : Colors.green,
+                      color:
+                          transaction.isExpense
+                              ? Colors.redAccent
+                              : Colors.green,
                     ),
                   ),
                   onTap: () {
@@ -1206,9 +1220,11 @@ class _BudgetScreenState extends State<BudgetScreen>
     }
 
     // Sort by highest spending
-    final sortedCategories = spendingByCategory.entries.toList()
-      ..sort((MapEntry<String, double> a, MapEntry<String, double> b) =>
-          b.value.compareTo(a.value));
+    final sortedCategories =
+        spendingByCategory.entries.toList()..sort(
+          (MapEntry<String, double> a, MapEntry<String, double> b) =>
+              b.value.compareTo(a.value),
+        );
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
@@ -1246,31 +1262,33 @@ class _BudgetScreenState extends State<BudgetScreen>
                     PieChartData(
                       sectionsSpace: 2,
                       centerSpaceRadius: 40,
-                      sections: sortedCategories.take(5).map((entry) {
-                        final category = _budgetCategories.firstWhere(
-                          (c) => c.name == entry.key,
-                          orElse: () => BudgetCategory(
-                            name: 'Other',
-                            icon: Icons.category,
-                            color: const Color(0xFF6554C0),
-                            allocated: 0,
-                            spent: 0,
-                          ),
-                        );
+                      sections:
+                          sortedCategories.take(5).map((entry) {
+                            final category = _budgetCategories.firstWhere(
+                              (c) => c.name == entry.key,
+                              orElse:
+                                  () => BudgetCategory(
+                                    name: 'Other',
+                                    icon: Icons.category,
+                                    color: const Color(0xFF6554C0),
+                                    allocated: 0,
+                                    spent: 0,
+                                  ),
+                            );
 
-                        return PieChartSectionData(
-                          value: entry.value,
-                          title:
-                              '${(entry.value / totalExpenses * 100).toStringAsFixed(1)}%',
-                          radius: 100,
-                          titleStyle: GoogleFonts.poppins(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
-                          ),
-                          color: category.color,
-                        );
-                      }).toList(),
+                            return PieChartSectionData(
+                              value: entry.value,
+                              title:
+                                  '${(entry.value / totalExpenses * 100).toStringAsFixed(1)}%',
+                              radius: 100,
+                              titleStyle: GoogleFonts.poppins(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                              color: category.color,
+                            );
+                          }).toList(),
                     ),
                   ),
                 ),
@@ -1278,13 +1296,14 @@ class _BudgetScreenState extends State<BudgetScreen>
                 ...sortedCategories.take(5).map((entry) {
                   final category = _budgetCategories.firstWhere(
                     (c) => c.name == entry.key,
-                    orElse: () => BudgetCategory(
-                      name: 'Other',
-                      icon: Icons.category,
-                      color: const Color(0xFF6554C0),
-                      allocated: 0,
-                      spent: 0,
-                    ),
+                    orElse:
+                        () => BudgetCategory(
+                          name: 'Other',
+                          icon: Icons.category,
+                          color: const Color(0xFF6554C0),
+                          allocated: 0,
+                          spent: 0,
+                        ),
                   );
 
                   return Padding(
@@ -1390,7 +1409,7 @@ class _BudgetScreenState extends State<BudgetScreen>
                                 'Mar',
                                 'Apr',
                                 'May',
-                                'Jun'
+                                'Jun',
                               ];
                               if (value >= 0 && value < monthLabels.length) {
                                 return Padding(
@@ -1443,22 +1462,23 @@ class _BudgetScreenState extends State<BudgetScreen>
                         drawVerticalLine: false,
                       ),
                       borderData: FlBorderData(show: false),
-                      barGroups: _monthlyExpenses.asMap().entries.map((entry) {
-                        return BarChartGroupData(
-                          x: entry.key,
-                          barRods: [
-                            BarChartRodData(
-                              toY: entry.value,
-                              width: 22,
-                              color: const Color(0xFF6554C0),
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(6),
-                                topRight: Radius.circular(6),
-                              ),
-                            ),
-                          ],
-                        );
-                      }).toList(),
+                      barGroups:
+                          _monthlyExpenses.asMap().entries.map((entry) {
+                            return BarChartGroupData(
+                              x: entry.key,
+                              barRods: [
+                                BarChartRodData(
+                                  toY: entry.value,
+                                  width: 22,
+                                  color: const Color(0xFF6554C0),
+                                  borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(6),
+                                    topRight: Radius.circular(6),
+                                  ),
+                                ),
+                              ],
+                            );
+                          }).toList(),
                     ),
                   ),
                 ),
@@ -1533,11 +1553,7 @@ class _BudgetScreenState extends State<BudgetScreen>
             color: color.withOpacity(0.1),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Icon(
-            icon,
-            color: color,
-            size: 22,
-          ),
+          child: Icon(icon, color: color, size: 22),
         ),
         const SizedBox(width: 12),
         Expanded(
@@ -1618,8 +1634,10 @@ class _BudgetScreenState extends State<BudgetScreen>
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
-                      borderSide:
-                          const BorderSide(color: Color(0xFF6554C0), width: 2),
+                      borderSide: const BorderSide(
+                        color: Color(0xFF6554C0),
+                        width: 2,
+                      ),
                     ),
                   ),
                 ),
@@ -1636,8 +1654,10 @@ class _BudgetScreenState extends State<BudgetScreen>
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
-                      borderSide:
-                          const BorderSide(color: Color(0xFF6554C0), width: 2),
+                      borderSide: const BorderSide(
+                        color: Color(0xFF6554C0),
+                        width: 2,
+                      ),
                     ),
                   ),
                   keyboardType: TextInputType.number,
@@ -1727,8 +1747,10 @@ class _BudgetScreenState extends State<BudgetScreen>
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
-                      borderSide:
-                          const BorderSide(color: Color(0xFF6554C0), width: 2),
+                      borderSide: const BorderSide(
+                        color: Color(0xFF6554C0),
+                        width: 2,
+                      ),
                     ),
                   ),
                 ),
@@ -1745,8 +1767,10 @@ class _BudgetScreenState extends State<BudgetScreen>
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
-                      borderSide:
-                          const BorderSide(color: Color(0xFF6554C0), width: 2),
+                      borderSide: const BorderSide(
+                        color: Color(0xFF6554C0),
+                        width: 2,
+                      ),
                     ),
                   ),
                   keyboardType: TextInputType.number,
@@ -1763,16 +1787,19 @@ class _BudgetScreenState extends State<BudgetScreen>
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
-                      borderSide:
-                          const BorderSide(color: Color(0xFF6554C0), width: 2),
+                      borderSide: const BorderSide(
+                        color: Color(0xFF6554C0),
+                        width: 2,
+                      ),
                     ),
                   ),
-                  items: _budgetCategories.map((category) {
-                    return DropdownMenuItem<String>(
-                      value: category.name,
-                      child: Text(category.name),
-                    );
-                  }).toList(),
+                  items:
+                      _budgetCategories.map((category) {
+                        return DropdownMenuItem<String>(
+                          value: category.name,
+                          child: Text(category.name),
+                        );
+                      }).toList(),
                   onChanged: (value) {},
                 ),
                 const SizedBox(height: 16),
@@ -1787,19 +1814,15 @@ class _BudgetScreenState extends State<BudgetScreen>
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
-                      borderSide:
-                          const BorderSide(color: Color(0xFF6554C0), width: 2),
+                      borderSide: const BorderSide(
+                        color: Color(0xFF6554C0),
+                        width: 2,
+                      ),
                     ),
                   ),
                   items: const [
-                    DropdownMenuItem<bool>(
-                      value: true,
-                      child: Text('Expense'),
-                    ),
-                    DropdownMenuItem<bool>(
-                      value: false,
-                      child: Text('Income'),
-                    ),
+                    DropdownMenuItem<bool>(value: true, child: Text('Expense')),
+                    DropdownMenuItem<bool>(value: false, child: Text('Income')),
                   ],
                   onChanged: (value) {},
                 ),
@@ -1873,9 +1896,10 @@ class ProfileScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
-                      color: Colors.grey.shade200,
-                      blurRadius: 10,
-                      offset: const Offset(0, 2)),
+                    color: Colors.grey.shade200,
+                    blurRadius: 10,
+                    offset: const Offset(0, 2),
+                  ),
                 ],
               ),
               child: Row(
@@ -1966,8 +1990,10 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   ListTile(
-                    leading: const Icon(Icons.lock_outline,
-                        color: Color(0xFF6554C0)),
+                    leading: const Icon(
+                      Icons.lock_outline,
+                      color: Color(0xFF6554C0),
+                    ),
                     title: Text(
                       'Change Password',
                       style: GoogleFonts.poppins(
@@ -1975,16 +2001,21 @@ class ProfileScreen extends StatelessWidget {
                         color: Colors.grey.shade700,
                       ),
                     ),
-                    trailing: const Icon(Icons.arrow_forward_ios,
-                        size: 16, color: Colors.grey),
+                    trailing: const Icon(
+                      Icons.arrow_forward_ios,
+                      size: 16,
+                      color: Colors.grey,
+                    ),
                     onTap: () {
                       // Change Password action
                     },
                   ),
                   const Divider(),
                   ListTile(
-                    leading: const Icon(Icons.notifications_outlined,
-                        color: Color(0xFF6554C0)),
+                    leading: const Icon(
+                      Icons.notifications_outlined,
+                      color: Color(0xFF6554C0),
+                    ),
                     title: Text(
                       'Notification Settings',
                       style: GoogleFonts.poppins(
@@ -1992,8 +2023,11 @@ class ProfileScreen extends StatelessWidget {
                         color: Colors.grey.shade700,
                       ),
                     ),
-                    trailing: const Icon(Icons.arrow_forward_ios,
-                        size: 16, color: Colors.grey),
+                    trailing: const Icon(
+                      Icons.arrow_forward_ios,
+                      size: 16,
+                      color: Colors.grey,
+                    ),
                     onTap: () {
                       // Notification settings action
                     },
@@ -2028,8 +2062,10 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   ListTile(
-                    leading: const Icon(Icons.privacy_tip_outlined,
-                        color: Color(0xFF6554C0)),
+                    leading: const Icon(
+                      Icons.privacy_tip_outlined,
+                      color: Color(0xFF6554C0),
+                    ),
                     title: Text(
                       'Privacy Policy',
                       style: GoogleFonts.poppins(
@@ -2037,16 +2073,21 @@ class ProfileScreen extends StatelessWidget {
                         color: Colors.grey.shade700,
                       ),
                     ),
-                    trailing: const Icon(Icons.arrow_forward_ios,
-                        size: 16, color: Colors.grey),
+                    trailing: const Icon(
+                      Icons.arrow_forward_ios,
+                      size: 16,
+                      color: Colors.grey,
+                    ),
                     onTap: () {
                       // Privacy policy action
                     },
                   ),
                   const Divider(),
                   ListTile(
-                    leading: const Icon(Icons.verified_user_outlined,
-                        color: Color(0xFF6554C0)),
+                    leading: const Icon(
+                      Icons.verified_user_outlined,
+                      color: Color(0xFF6554C0),
+                    ),
                     title: Text(
                       'Terms of Service',
                       style: GoogleFonts.poppins(
@@ -2054,8 +2095,11 @@ class ProfileScreen extends StatelessWidget {
                         color: Colors.grey.shade700,
                       ),
                     ),
-                    trailing: const Icon(Icons.arrow_forward_ios,
-                        size: 16, color: Colors.grey),
+                    trailing: const Icon(
+                      Icons.arrow_forward_ios,
+                      size: 16,
+                      color: Colors.grey,
+                    ),
                     onTap: () {
                       // Terms of service action
                     },

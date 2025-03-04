@@ -548,6 +548,14 @@ class _TransactionsScreenState extends State<TransactionsScreen>
     return Scaffold(
       backgroundColor: const Color(0xFFF5F7FA),
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back), // Customize the icon here
+          onPressed: () {
+            // Handle navigation logic, for example:
+            Navigator.pop(context); // Takes the user to the previous screen
+            // or Navigator.pushNamed(context, '/previousScreen'); if you want to go to a specific screen.
+          },
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: const Text(
