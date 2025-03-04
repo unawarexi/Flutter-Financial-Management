@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
 const UserModel = require('../models/UserModel');
-const pool = require('../config/dbconfig');
+const db = require('../models/index');
 const redis = require('../cache/redis'); // Assuming redis.js is in the project root
 
 // Register new user
@@ -55,7 +55,7 @@ exports.register = async (req, res, next) => {
     const tokens = generateTokens(newUser);
     
     // Store refresh token
-    await pool.query(
+    await db.query(
       'INSERT INTO user_sessions (user_id, refresh_token, device_info, expires_at) VALUES ($1, $2, $3, $4)',
       [
         newUser.id, 
@@ -115,7 +115,7 @@ exports.login = async (req, res, next) => {
     const tokens = generateTokens(user);
     
     // Store refresh token
-    await pool.query(
+    await db.query(
       'INSERT INTO user_sessions (user_id, refresh_token, device_info, expires_at) VALUES ($1, $2, $3, $4)',
       [
         user.id, 
@@ -164,7 +164,7 @@ exports.refreshToken = async (req, res, next) => {
     }
     
     // Verify token in database
-    const sessionResult = await pool.query(
+    const sessionResult = await db.query(
       'SELECT * FROM user_sessions WHERE refresh_token = $1 AND expires_at > NOW()',
       [refreshToken]
     );
@@ -196,7 +196,7 @@ exports.refreshToken = async (req, res, next) => {
     const tokens = generateTokens(user);
     
     // Update refresh token in database
-    await pool.query(
+    await db.query(
       'UPDATE user_sessions SET refresh_token = $1, expires_at = $2 WHERE refresh_token = $3',
       [
         tokens.refreshToken,
@@ -232,7 +232,7 @@ exports.logout = async (req, res, next) => {
     }
     
     // Remove session from database
-    await pool.query(
+    await db.query(
       'DELETE FROM user_sessions WHERE refresh_token = $1',
       [refreshToken]
     );
@@ -258,7 +258,7 @@ exports.verifyEmail = async (req, res, next) => {
     const { token } = req.params;
     
     // Find verification token
-    const tokenResult = await pool.query(
+    const tokenResult = await db.query(
       'SELECT * FROM email_verification_tokens WHERE token = $1 AND expires_at > NOW()',
       [token]
     );
@@ -274,13 +274,13 @@ exports.verifyEmail = async (req, res, next) => {
     }
     
     // Update user's email verification status
-    await pool.query(
+    await db.query(
       'UPDATE users SET email_verified = TRUE, updated_at = NOW() WHERE id = $1',
       [tokenResult.rows[0].user_id]
     );
     
     // Delete the used token
-    await pool.query(
+    await db.query(
       'DELETE FROM email_verification_tokens WHERE token = $1',
       [token]
     );
@@ -316,7 +316,7 @@ exports.requestPasswordReset = async (req, res, next) => {
     const expiresAt = new Date(Date.now() + 1 * 60 * 60 * 1000); // 1 hour
     
     // Store token in database
-    await pool.query(
+    await db.query(
       'INSERT INTO password_reset_tokens (user_id, token, expires_at) VALUES ($1, $2, $3)',
       [user.id, resetToken, expiresAt]
     );
@@ -340,7 +340,7 @@ exports.resetPassword = async (req, res, next) => {
     const { token, newPassword } = req.body;
     
     // Find reset token
-    const tokenResult = await pool.query(
+    const tokenResult = await db.query(
       'SELECT * FROM password_reset_tokens WHERE token = $1 AND expires_at > NOW()',
       [token]
     );
@@ -363,13 +363,13 @@ exports.resetPassword = async (req, res, next) => {
     await UserModel.updatePassword(tokenResult.rows[0].user_id, password_hash);
     
     // Delete all refresh tokens for this user (force logout from all devices)
-    await pool.query(
+    await db.query(
       'DELETE FROM user_sessions WHERE user_id = $1',
       [tokenResult.rows[0].user_id]
     );
     
     // Delete the used token
-    await pool.query(
+    await db.query(
       'DELETE FROM password_reset_tokens WHERE token = $1',
       [token]
     );
