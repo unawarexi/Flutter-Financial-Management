@@ -4,21 +4,21 @@ module.exports = {
   development: {
     username: process.env.DB_USER || 'root',
     password: process.env.DB_PASS || null, // Changed from DB_PASSWORD to DB_PASS
-    database: process.env.DB_NAME || 'database_development',
+    database: process.env.DB_NAME || 'flutterfinance',
     host: process.env.DB_HOST || '127.0.0.1',
     port: process.env.DB_PORT || 5432,
     dialect: 'postgres',
-    dialectOptions: {
-      ssl: process.env.NODE_ENV === 'production' ? {
-        require: true,
-        rejectUnauthorized: false
-      } : false
-    }
+    // dialectOptions: {
+    //   ssl: process.env.NODE_ENV === 'production' ? {
+    //     require: true,
+    //     rejectUnauthorized: false
+    //   } : false
+    // }
   },
   test: {
     username: process.env.DB_USER || 'root',
     password: process.env.DB_PASS || null, 
-    database: process.env.DB_NAME || 'database_test',
+    database: process.env.DB_NAME || 'flutterfinance',
     host: process.env.DB_HOST || '127.0.0.1',
     port: process.env.DB_PORT || 5432,
     dialect: 'postgres'
