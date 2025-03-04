@@ -1,4 +1,4 @@
-const UserModel = require('../models/UserModel');
+const UserModel = require('../sequelize/models/UserModel');
 const bcrypt = require('bcrypt');
 
 const UserController = {

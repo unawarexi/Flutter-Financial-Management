@@ -8,7 +8,7 @@ const rateLimit = require('express-rate-limit');
 const compression = require('compression');
 const Redis = require('ioredis');
 const dotenv = require('dotenv');
-const db = require('./models/index');
+const db = require('./sequelize/models/index');
 
 // Load environment variables
 dotenv.config();

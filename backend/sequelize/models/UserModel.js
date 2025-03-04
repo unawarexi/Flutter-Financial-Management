@@ -1,6 +1,6 @@
 // models/UserModel.js
 
-const User = require('./User');
+const User = require('../migrations/User');
 
 const UserModel = {
   // Create a new user

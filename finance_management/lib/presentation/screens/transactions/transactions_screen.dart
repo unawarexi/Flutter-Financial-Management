@@ -9,7 +9,7 @@ class Transaction {
   final int quantity;
   final String category;
   final DateTime date;
-  final bool isExpense;
+  bool isExpense;
   final IconData icon;
 
   Transaction({
@@ -1084,6 +1084,11 @@ class TransactionDetailScreen extends StatelessWidget {
                             : Icons.trending_up_outlined,
                     valueColor:
                         transaction.isExpense ? Colors.redAccent : Colors.green,
+                    onTap:
+                        () =>
+                            transaction.isExpense =
+                                !transaction
+                                    .isExpense, // Add onTap to handle click events
                   ),
                 ],
               ),
@@ -1163,37 +1168,41 @@ class TransactionDetailScreen extends StatelessWidget {
     required String value,
     required IconData icon,
     Color? valueColor,
+    VoidCallback? onTap, // Add onTap to handle click events
   }) {
-    return Row(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: const Color(0xFFECF0FF),
-            borderRadius: BorderRadius.circular(10),
+    return GestureDetector(
+      onTap: onTap, // Enable clicking
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: const Color(0xFFECF0FF),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Icon(icon, color: const Color(0xFF4E74F9), size: 24),
           ),
-          child: Icon(icon, color: const Color(0xFF4E74F9), size: 24),
-        ),
-        const SizedBox(width: 16),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: const TextStyle(fontSize: 14, color: Color(0xFF78839C)),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              value,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: valueColor ?? const Color(0xFF2E3E5C),
+          const SizedBox(width: 16),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(fontSize: 14, color: Color(0xFF78839C)),
               ),
-            ),
-          ],
-        ),
-      ],
+              const SizedBox(height: 4),
+              Text(
+                value,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: valueColor ?? const Color(0xFF2E3E5C),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
