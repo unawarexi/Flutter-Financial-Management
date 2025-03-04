@@ -83,13 +83,15 @@ class LoginScreen extends StatelessWidget {
                 // Login button
                 ElevatedButton(
                   onPressed: () {
-                    // Navigate to home dashboard
-                    Navigator.push(
+                    // Navigate to home dashboard, replacing the current page
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const BottomNavigation()),
+                        builder: (context) => const BottomNavigation(),
+                      ),
                     );
                   },
+
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF4E74F9),
                     foregroundColor: Colors.white,
@@ -156,16 +158,15 @@ class LoginScreen extends StatelessWidget {
                   children: [
                     const Text(
                       "Don't have an account? ",
-                      style: TextStyle(
-                        color: Color(0xFF78839C),
-                      ),
+                      style: TextStyle(color: Color(0xFF78839C)),
                     ),
                     TextButton(
                       onPressed: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const SignupScreen()),
+                            builder: (context) => const SignupScreen(),
+                          ),
                         );
                       },
                       child: const Text(

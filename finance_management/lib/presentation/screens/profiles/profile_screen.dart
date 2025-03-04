@@ -1,31 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Finance App Profile',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primaryColor: const Color(0xFF6E8EFB),
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF6E8EFB),
-          secondary: const Color(0xFFA777E3),
-        ),
-        fontFamily: 'Poppins',
-      ),
-      home: const ProfileScreen(),
-    );
-  }
-}
-
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
@@ -43,6 +18,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F7FF),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Color(0xFF6E8EFB)),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: const Text(
+          'Profile',
+          style: TextStyle(
+            color: Color(0xFF6E8EFB),
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
@@ -79,10 +71,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             width: 110,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              border: Border.all(
-                                color: Colors.white,
-                                width: 4,
-                              ),
+                              border: Border.all(color: Colors.white, width: 4),
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.black.withOpacity(0.2),
@@ -93,7 +82,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             child: const CircleAvatar(
                               backgroundImage: NetworkImage(
-                                  'https://via.placeholder.com/150'),
+                                'https://via.placeholder.com/150',
+                              ),
                             ),
                           ),
                         ),
@@ -145,16 +135,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     // User Email
                     const Text(
                       'alex.johnson@example.com',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.white70,
-                      ),
+                      style: TextStyle(fontSize: 14, color: Colors.white70),
                     ),
                     const SizedBox(height: 15),
                     // Premium Badge
                     Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 6),
+                        horizontal: 12,
+                        vertical: 6,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.25),
                         borderRadius: BorderRadius.circular(20),
@@ -232,7 +221,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           isDarkMode = value;
                         });
                         _showActionSnackBar(
-                            'Dark Mode: ${value ? 'Enabled' : 'Disabled'}');
+                          'Dark Mode: ${value ? 'Enabled' : 'Disabled'}',
+                        );
                       },
                     ),
                     _buildSwitchItem(
@@ -244,7 +234,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           isNotificationsEnabled = value;
                         });
                         _showActionSnackBar(
-                            'Notifications: ${value ? 'Enabled' : 'Disabled'}');
+                          'Notifications: ${value ? 'Enabled' : 'Disabled'}',
+                        );
                       },
                     ),
                     _buildSwitchItem(
@@ -256,7 +247,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           isBiometricEnabled = value;
                         });
                         _showActionSnackBar(
-                            'Biometric: ${value ? 'Enabled' : 'Disabled'}');
+                          'Biometric: ${value ? 'Enabled' : 'Disabled'}',
+                        );
                       },
                     ),
                     _buildSwitchItem(
@@ -268,7 +260,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           isAutoSaveEnabled = value;
                         });
                         _showActionSnackBar(
-                            'Auto-save: ${value ? 'Enabled' : 'Disabled'}');
+                          'Auto-save: ${value ? 'Enabled' : 'Disabled'}',
+                        );
                       },
                     ),
                     const SizedBox(height: 20),
@@ -309,9 +302,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           padding: const EdgeInsets.symmetric(vertical: 15),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
-                            side: BorderSide(
-                              color: Colors.grey.shade200,
-                            ),
+                            side: BorderSide(color: Colors.grey.shade200),
                           ),
                           elevation: 0,
                         ),
@@ -401,11 +392,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Icon(
-                    icon,
-                    color: Colors.white,
-                    size: 20,
-                  ),
+                  child: Icon(icon, color: Colors.white, size: 20),
                 ),
                 const SizedBox(width: 15),
                 Expanded(
@@ -419,8 +406,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 if (badge != null)
                   Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 5,
+                    ),
                     decoration: BoxDecoration(
                       color: const Color(0xFFF5F7FF),
                       borderRadius: BorderRadius.circular(15),
@@ -484,11 +473,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Icon(
-                icon,
-                color: Colors.white,
-                size: 20,
-              ),
+              child: Icon(icon, color: Colors.white, size: 20),
             ),
             const SizedBox(width: 15),
             Expanded(
