@@ -19,7 +19,7 @@ if (env === 'production' && config.url) {
 } else {
   // Use individual parameters for development/test
   sequelize = new Sequelize(
-    config.database,
+    config.url || config.database,
     config.username,
     config.password,
     config
