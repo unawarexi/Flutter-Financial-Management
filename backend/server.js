@@ -13,6 +13,7 @@ const {sequelize} = require('./sequelize/models');
 // Load environment variables
 dotenv.config();
 
+
 // Initialize Express app
 const app = express();
 const server = http.createServer(app);
