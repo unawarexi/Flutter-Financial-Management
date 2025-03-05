@@ -24,7 +24,8 @@ if (process.env.DATABASE_URL) {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
-db.User = require('./User')(sequelize, Sequelize.DataTypes);
+const UserModel = require('./User')(sequelize, Sequelize.DataTypes);
+db.User = UserModel;
 
 // More robust model loading
 // fs.readdirSync(__dirname)
