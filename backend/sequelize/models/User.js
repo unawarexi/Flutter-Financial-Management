@@ -1,4 +1,4 @@
-// Do not destructure `sequelize` and `DataTypes` directly from 'sequelize'
+
 
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
