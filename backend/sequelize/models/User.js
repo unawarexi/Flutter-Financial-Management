@@ -1,8 +1,6 @@
-// models/User.js
+// Do not destructure `sequelize` and `DataTypes` directly from 'sequelize'
 
-const { DataTypes } = require('sequelize');
-
-module.exports = (sequelize) => {
+module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     first_name: {
       type: DataTypes.STRING,
@@ -38,8 +36,8 @@ module.exports = (sequelize) => {
       allowNull: true,
     },
   }, {
-    tableName: 'users', // Ensures Sequelize matches the existing table name
-    timestamps: true,   // Automatically manages createdAt/updatedAt fields
+    tableName: 'users', 
+    timestamps: true,   
   });
 
   return User;

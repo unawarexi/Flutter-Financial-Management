@@ -2,6 +2,7 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "Save your time! Don't build repetetive things from scratch",
+  "type": "commonjs",
   "main": "server.js",
   "scripts": {
     "start": "nodemon server.js",
@@ -36,5 +37,8 @@
     "socket.io": "^4.8.1",
     "util": "^0.12.5",
     "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^6.6.2"
   }
 }

@@ -1,4 +1,3 @@
-// server.js
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
@@ -8,11 +7,15 @@ const rateLimit = require('express-rate-limit');
 const compression = require('compression');
 const Redis = require('ioredis');
 const dotenv = require('dotenv');
-const {sequelize} = require('./sequelize/models');
+const { sequelize } = require('./sequelize/models');
+const authRoutes = require('./routes/authRoutes');
+const userRoutes = require('./routes/userRoutes');
+// const transactionRoutes = require('./routes/transactions');
+// const notificationRoutes = require('./routes/notifications');
+const socketHandler = require('./websocket/Socket');
 
 // Load environment variables
 dotenv.config();
-
 
 // Initialize Express app
 const app = express();
@@ -72,12 +75,6 @@ const apiLimiter = rateLimit({
 });
 app.use('/api/', apiLimiter);
 
-// Import routes
-const authRoutes = require('./routes/authRoutes');
-const userRoutes = require('./routes/userRoutes');
-// const transactionRoutes = require('./routes/transactions');
-// const notificationRoutes = require('./routes/notifications');
-
 // Register routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
@@ -117,8 +114,8 @@ app.get('/health', async (req, res) => {
 });
 
 // Socket.IO connection handler
-if (typeof require('./websocket/Socket') === 'function') {
-  require('./websocket/Socket')(io, sequelize, redis);
+if (typeof socketHandler === 'function') {
+  socketHandler(io, sequelize, redis);
 }
 
 // Error handler middleware

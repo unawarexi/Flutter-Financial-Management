@@ -1,6 +1,6 @@
 // models/UserModel.js
 
-const User = require('../migrations/User');
+const User = require('../sequelize/models/User');
 
 const UserModel = {
   // Create a new user

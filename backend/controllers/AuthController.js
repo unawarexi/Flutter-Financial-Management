@@ -2,8 +2,8 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
-const UserModel = require('../sequelize/models/UserModel');
-const db = require('../sequelize/models/index');
+const UserModel = require('../base/UserModel');
+const db = require('../sequelize/models/index').default;
 const redis = require('../cache/redis'); // Assuming redis.js is in the project root
 
 // Register new user
