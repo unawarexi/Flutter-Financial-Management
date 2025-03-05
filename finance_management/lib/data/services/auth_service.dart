@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AuthService {
   final Dio _dio = Dio();
   final String _baseUrl =
-      'http://your-api-base-url.com/api'; // Replace with your actual API URL
+      'https://flutterfinance.onrender.com/api'; // Replace with your actual API URL
 
   // Store tokens after login/registration
   Future<void> _saveTokens(String accessToken, String refreshToken) async {

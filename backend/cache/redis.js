@@ -1,12 +1,11 @@
-// redis.js
 const Redis = require('ioredis');
-const { promisify } = require('util');
 
 // Environment variables with fallbacks
 const REDIS_HOST = process.env.REDIS_HOST || 'localhost';
-const REDIS_PORT = process.env.REDIS_PORT || 6379;
+const REDIS_PORT = parseInt(process.env.REDIS_PORT, 10) || 6379;  // Convert port to number
 const REDIS_PASSWORD = process.env.REDIS_PASSWORD || null;
 const REDIS_DB = process.env.REDIS_DB || 0;
+const REDIS_USER = process.env.REDIS_USER || 'default';
 
 // Create Redis client
 const redisClient = new Redis({
@@ -14,14 +13,12 @@ const redisClient = new Redis({
   port: REDIS_PORT,
   password: REDIS_PASSWORD,
   db: REDIS_DB,
-  // Retry strategy on connection failures
+  username: REDIS_USER,  // Add username
   retryStrategy: (times) => {
-    // Exponential backoff with a cap
     const delay = Math.min(times * 50, 2000);
     return delay;
-  }
+  },
 });
-
 // Connection events for better error handling
 redisClient.on('connect', () => {
   console.log('Redis client connected');
@@ -37,7 +34,7 @@ redisClient.on('reconnecting', () => {
 
 // Create simplified API
 const redis = {
-  // Get a value (with optional expiry)
+  // Get a value
   get: async (key) => {
     try {
       const value = await redisClient.get(key);
