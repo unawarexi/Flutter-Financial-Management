@@ -16,15 +16,16 @@ if (env === 'production' && config.url) {
     dialect: 'postgres',
     dialectOptions: config.dialectOptions,
   });
-} else {
-  // Use individual parameters for development/test
-  sequelize = new Sequelize(
-    config.database,
-    config.username,
-    config.password,
-    config
-  );
-}
+} 
+// else {
+//   // Use individual parameters for development/test
+//   sequelize = new Sequelize(
+//     config.database,
+//     config.username,
+//     config.password,
+//     config
+//   );
+// }
 
 // Read all files in the models folder and require only model files
 fs.readdirSync(__dirname)
