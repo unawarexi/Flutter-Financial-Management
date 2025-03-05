@@ -8,12 +8,12 @@ module.exports = {
     host: process.env.DB_HOST || '127.0.0.1',
     port: process.env.DB_PORT || 5432,
     dialect: 'postgres',
-    // dialectOptions: {
-    //   ssl: process.env.NODE_ENV === 'production' ? {
-    //     require: true,
-    //     rejectUnauthorized: false
-    //   } : false
-    // }
+    dialectOptions: {
+      ssl: process.env.NODE_ENV === 'true' ? {
+        require: true,
+        rejectUnauthorized: false
+      } : false
+    }
   },
   test: {
     username: process.env.DB_USER || 'root',

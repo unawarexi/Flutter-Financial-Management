@@ -5,7 +5,7 @@ const path = require('path');
 const Sequelize = require('sequelize');
 const process = require('process');
 const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || 'production';
+const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config.js')[env];
 const db = {};
 
@@ -14,18 +14,33 @@ if (env === 'production' && config.url) {
   // Use the connection URL for production (Render)
   sequelize = new Sequelize(config.url, {
     dialect: 'postgres',
-    dialectOptions: config.dialectOptions,
+    dialectOptions: config.dialectOptions || {
+      dialectOptions: {
+        ssl: {
+          require: true,
+          rejectUnauthorized: false
+        }
+      }
+    },
   });
-} 
-// else {
-//   // Use individual parameters for development/test
-//   sequelize = new Sequelize(
-//     config.database,
-//     config.username,
-//     config.password,
-//     config
-//   );
-// }
+} else {
+  // Use individual parameters for development/test
+  sequelize = new Sequelize(
+    config.database,
+    config.username,
+    config.password,
+    {
+      ...config,
+      dialectOptions: {
+        ssl: {
+          require: true,
+          rejectUnauthorized: false
+        }
+      }
+    }
+
+  );
+}
 
 // Read all files in the models folder and require only model files
 fs.readdirSync(__dirname)
