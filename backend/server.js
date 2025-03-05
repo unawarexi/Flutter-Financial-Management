@@ -8,7 +8,7 @@ const rateLimit = require('express-rate-limit');
 const compression = require('compression');
 const Redis = require('ioredis');
 const dotenv = require('dotenv');
-const db = require('./sequelize/models/index');
+const {sequelize} = require('./sequelize/models/index');
 
 // Load environment variables
 dotenv.config();
@@ -87,7 +87,7 @@ app.use('/api/users', userRoutes);
 app.get('/health', async (req, res) => {
   try {
     // Test database connection
-    const dbResult = await db.query('SELECT NOW()');
+    const dbResult = await sequelize.query('SELECT NOW()');
     
     // Test Redis connection (with error handling)
     let redisStatus = 'Not connected';
@@ -117,7 +117,7 @@ app.get('/health', async (req, res) => {
 
 // Socket.IO connection handler
 if (typeof require('./websocket/Socket') === 'function') {
-  require('./websocket/Socket')(io, db, redis);
+  require('./websocket/Socket')(io, sequelize, redis);
 }
 
 // Error handler middleware
@@ -133,15 +133,26 @@ app.use((err, req, res, next) => {
 
 // Start server
 const PORT = process.env.PORT || 3000;
-db.sequelize.authenticate()
-  .then(() => {
-    console.log('Database connection established successfully.');
-    server.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-    });
-  })
-  .catch(err => {
-    console.error('Unable to connect to the database:', err);
+const connectDb = async () => {
+  console.log('Checking database connection...');
+
+  try {
+      await sequelize.authenticate();
+      console.log('Database connection established.');
+  } catch(e) {
+      console.log('Database connection failed', e);
+      process.exit(1);
+  }
+};
+
+(async () => {
+  await connectDb();
+
+  console.log(`Attempting to run server on port ${PORT}`);
+
+  app.listen(PORT, () => {
+      console.log(`Listening on port ${PORT}`);
   });
+})();
 
 module.exports = { app, server };
