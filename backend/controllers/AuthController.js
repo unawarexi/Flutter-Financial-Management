@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
 const UserModel = require('../base/UserModel');
 const db = require('../sequelize/models/index').default;
-const redis = require('../cache/redis'); // Assuming redis.js is in the project root
+const redis = require('../cache/redis'); 
 
 // Register new user
 exports.register = async (req, res, next) => {
@@ -36,6 +36,9 @@ exports.register = async (req, res, next) => {
     // Hash password
     const saltRounds = 10;
     const password_hash = await bcrypt.hash(password, saltRounds);
+
+    // Convert date_of_birth (string) to a Date object
+    const dateOfBirth = new Date(date_of_birth);
     
     // Create new user
     const userData = {
@@ -43,7 +46,7 @@ exports.register = async (req, res, next) => {
       last_name,
       email,
       phone_number,
-      date_of_birth,
+      date_of_birth: dateOfBirth,  
       password_hash,
       monthly_income,
       financial_goal
@@ -79,6 +82,7 @@ exports.register = async (req, res, next) => {
     next(err);
   }
 };
+
 
 // Login user
 exports.login = async (req, res, next) => {

@@ -5,7 +5,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const compression = require('compression');
-const Redis = require('ioredis');
+const redis = require('./cache/redis');
 const dotenv = require('dotenv');
 const { sequelize } = require('./sequelize/models');
 const authRoutes = require('./routes/authRoutes');
@@ -29,32 +29,32 @@ const io = socketIo(server, {
 });
 
 // Redis for caching - with more robust connection options
-let redis;
-try {
-  const redisConfig = {
-    host: process.env.REDIS_URL ? new URL(process.env.REDIS_URL).hostname : 'localhost',
-    port: process.env.REDIS_URL ? new URL(process.env.REDIS_URL).port : 6379,
-    password: process.env.REDIS_PASSWORD || undefined,
-    db: parseInt(process.env.REDIS_DB || '0'),
-    maxRetriesPerRequest: 3,
-    retryStrategy: (times) => {
-      return Math.min(times * 100, 3000);
-    }
-  };
+// let redis;
+// try {
+//   const redisConfig = {
+//     host: process.env.REDIS_URL ? new URL(process.env.REDIS_URL).hostname : 'localhost',
+//     port: process.env.REDIS_URL ? new URL(process.env.REDIS_URL).port : 6379,
+//     password: process.env.REDIS_PASSWORD || undefined,
+//     db: parseInt(process.env.REDIS_DB || '0'),
+//     maxRetriesPerRequest: 3,
+//     retryStrategy: (times) => {
+//       return Math.min(times * 100, 3000);
+//     }
+//   };
   
-  redis = new Redis(redisConfig);
+//   redis = new Redis(redisConfig);
   
-  redis.on('error', (err) => {
-    console.error('Redis connection error:', err);
-  });
-} catch (error) {
-  console.error('Redis initialization error:', error);
-  // Continue without Redis if there's an error
-  redis = {
-    set: () => Promise.resolve(),
-    get: () => Promise.resolve(null)
-  };
-}
+//   redis.on('error', (err) => {
+//     console.error('Redis connection error:', err);
+//   });
+// } catch (error) {
+//   console.error('Redis initialization error:', error);
+//   // Continue without Redis if there's an error
+//   redis = {
+//     set: () => Promise.resolve(),
+//     get: () => Promise.resolve(null)
+//   };
+// }
 
 // Middleware
 app.use(cors({ 
@@ -82,36 +82,36 @@ app.use('/api/users', userRoutes);
 // app.use('/api/notifications', notificationRoutes);
 
 // Health check endpoint with DB check
-app.get('/health', async (req, res) => {
-  try {
-    // Test database connection
-    const dbResult = await sequelize.query('SELECT NOW()');
+// app.get('/health', async (req, res) => {
+//   try {
+//     // Test database connection
+//     const dbResult = await sequelize.query('SELECT NOW()');
     
-    // Test Redis connection (with error handling)
-    let redisStatus = 'Not connected';
-    try {
-      await redis.set('test', 'success');
-      const redisResult = await redis.get('test');
-      redisStatus = redisResult === 'success' ? 'Connected' : 'Error';
-    } catch (redisError) {
-      console.error('Redis health check failed:', redisError);
-    }
+//     // Test Redis connection (with error handling)
+//     let redisStatus = 'Not connected';
+//     try {
+//       await redis.set('test', 'success');
+//       const redisResult = await redis.get('test');
+//       redisStatus = redisResult === 'success' ? 'Connected' : 'Error';
+//     } catch (redisError) {
+//       console.error('Redis health check failed:', redisError);
+//     }
     
-    res.status(200).json({
-      status: 'OK',
-      database: dbResult && dbResult.rows ? 'Connected' : 'Error',
-      redis: redisStatus
-    });
-  } catch (error) {
-    console.error('Health check failed:', error);
-    res.status(500).json({
-      status: 'Error',
-      message: error.message,
-      database: 'Error',
-      redis: 'Unknown'
-    });
-  }
-});
+//     res.status(200).json({
+//       status: 'OK',
+//       database: dbResult && dbResult.rows ? 'Connected' : 'Error',
+//       redis: redisStatus
+//     });
+//   } catch (error) {
+//     console.error('Health check failed:', error);
+//     res.status(500).json({
+//       status: 'Error',
+//       message: error.message,
+//       database: 'Error',
+//       redis: 'Unknown'
+//     });
+//   }
+// });
 
 // Socket.IO connection handler
 if (typeof socketHandler === 'function') {

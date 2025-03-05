@@ -28,11 +28,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     monthly_income: {
-      type: DataTypes.FLOAT,
+      type: DataTypes.STRING,
       allowNull: true,
     },
     financial_goal: {
-      type: DataTypes.FLOAT,
+      type: DataTypes.STRING,
       allowNull: true,
     },
   }, {

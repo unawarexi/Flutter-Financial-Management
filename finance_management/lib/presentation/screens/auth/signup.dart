@@ -1,7 +1,8 @@
 import 'package:financial_management/data/services/auth_service.dart';
 import 'package:financial_management/presentation/screens/auth/login.dart';
+import 'package:financial_management/presentation/widgets/common/auth_divider.dart';
 import 'package:flutter/material.dart';
-import 'package:sign_button/sign_button.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -14,7 +15,7 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   bool _agreeToTerms = false;
   bool _isLoading = false;
-  final AuthService _authService = AuthService(); // Create instance
+  final AuthService _authService = AuthService();
 
   // Form controllers
   final TextEditingController _firstNameController = TextEditingController();
@@ -54,9 +55,7 @@ class _SignupScreenState extends State<SignupScreen> {
       context: context,
       initialDate:
           _selectedDate ??
-          DateTime.now().subtract(
-            const Duration(days: 365 * 18),
-          ), // Default to 18 years ago
+          DateTime.now().subtract(const Duration(days: 365 * 18)),
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
     );
@@ -69,77 +68,105 @@ class _SignupScreenState extends State<SignupScreen> {
     }
   }
 
-  // Register function
+  // Improved toast with more configuration
+  void _showToast(String message, {bool isError = false}) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.TOP, // More visible at the top
+      backgroundColor: isError ? Colors.red : Colors.green,
+      textColor: Colors.white,
+      fontSize: 16.0,
+      timeInSecForIosWeb: 3, // Longer display time
+    );
+  }
+
+  // Register function with improved error handling and logging
   Future<void> _register() async {
+    // Print initial registration attempt
+    print('Registration attempt started');
+
+    // Validate form
     if (!_formKey.currentState!.validate()) {
+      print('Form validation failed');
       return;
     }
 
+    // Check terms agreement
     if (!_agreeToTerms) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please agree to the terms and conditions'),
-        ),
-      );
+      _showToast('Please agree to the terms and conditions', isError: true);
+      print('Terms not agreed');
       return;
     }
 
-    // Check if passwords match
+    // Password match check
     if (_passwordController.text != _confirmPasswordController.text) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Passwords do not match')));
+      _showToast('Passwords do not match', isError: true);
+      print('Passwords do not match');
       return;
     }
 
+    // Set loading state
     setState(() {
       _isLoading = true;
     });
 
     try {
+      // Print submitted data for debugging
+      print('Submitting registration data:');
+      print('First Name: ${_firstNameController.text}');
+      print('Last Name: ${_lastNameController.text}');
+      print('Email: ${_emailController.text}');
+      print('Phone: ${_phoneController.text}');
+      print('DOB: ${_dobController.text}');
+      print('Income: ${_incomeController.text}');
+      print('Goal: $_selectedGoal');
+
+      // Call registration service
       final result = await _authService.register(
-        firstName: _firstNameController.text,
-        lastName: _lastNameController.text,
-        email: _emailController.text,
-        phoneNumber: _phoneController.text,
+        firstName: _firstNameController.text.trim(),
+        lastName: _lastNameController.text.trim(),
+        email: _emailController.text.trim(),
+        phoneNumber: _phoneController.text.trim(),
         dateOfBirth: _dobController.text,
         password: _passwordController.text,
         monthlyIncome:
-            _incomeController.text.isNotEmpty ? _incomeController.text : null,
+            _incomeController.text.isNotEmpty
+                ? _incomeController.text.trim()
+                : null,
         financialGoal: _selectedGoal,
       );
 
+      // Reset loading state
       setState(() {
         _isLoading = false;
       });
 
+      // Handle registration result
       if (result['status'] == 'success') {
-        // Registration successful, navigate to home or verification screen
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Account created successfully!')),
-        );
+        print('Registration successful');
+        _showToast('Account created successfully!');
 
-        // Navigate to home or verification screen
+        // Navigate to login screen
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const LoginScreen()),
         );
       } else {
-        // Show error message
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(result['error']['message'] ?? 'Registration failed'),
-          ),
+        print('Registration failed: ${result['error']?['message']}');
+        _showToast(
+          result['error']?['message'] ?? 'Registration failed',
+          isError: true,
         );
       }
     } catch (e) {
+      // Reset loading state
       setState(() {
         _isLoading = false;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('An unexpected error occurred: $e')),
-      );
+      print('Unexpected error during registration: $e');
+      _showToast('An unexpected error occurred', isError: true);
     }
   }
 
@@ -157,7 +184,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 40),
-                  // Title and subtitle
+                  // Title
                   const Text(
                     "Create Account",
                     style: TextStyle(
@@ -176,7 +203,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                   ),
                   const SizedBox(height: 48),
-
+                  // Form fields...
                   // Personal information
                   const Text(
                     "Personal Information",
@@ -462,6 +489,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   const SizedBox(height: 32),
 
                   // Sign Up button with loading state
+                  // Improved Loading Indicator and Button
                   ElevatedButton(
                     onPressed: _isLoading || !_agreeToTerms ? null : _register,
                     style: ElevatedButton.styleFrom(
@@ -475,8 +503,13 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     child:
                         _isLoading
-                            ? const CircularProgressIndicator(
-                              color: Colors.white,
+                            ? const SizedBox(
+                              width: 30,
+                              height: 30,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 3,
+                              ),
                             )
                             : const Text(
                               "Create Account",
@@ -488,55 +521,9 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
 
                   const SizedBox(height: 24),
-
-                  // Or divider
-                  const Row(
-                    children: [
-                      Expanded(child: Divider()),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16),
-                        child: Text(
-                          "OR",
-                          style: TextStyle(
-                            color: Color(0xFF78839C),
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      Expanded(child: Divider()),
-                    ],
-                  ),
+                  const AuthDivider(),
 
                   const SizedBox(height: 24),
-
-                  // Social signup buttons
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SignInButton.mini(
-                        buttonType: ButtonType.google,
-                        onPressed: () {
-                          // TODO: Implement social login
-                        },
-                      ),
-                      const SizedBox(width: 24),
-                      SignInButton.mini(
-                        buttonType: ButtonType.facebook,
-                        onPressed: () {
-                          // TODO: Implement social login
-                        },
-                      ),
-                      const SizedBox(width: 24),
-                      SignInButton.mini(
-                        buttonType: ButtonType.microsoft,
-                        onPressed: () {
-                          // TODO: Implement social login
-                        },
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 32),
 
                   // Already have account
                   Row(
